@@ -21,6 +21,8 @@ test("server-renders the complete portfolio and metadata", async () => {
   assert.match(html, /<title>Aarav Shah — Systems in Motion<\/title>/i);
   assert.match(html, /Different systems\. One mindset: disciplined improvement\./);
   assert.match(html, /FTC Team 31053/);
+  assert.match(html, /PLTW Introduction to Engineering Design EOC/);
+  assert.match(html, /Distinguished · May 2026 · Panther Creek High School/);
   assert.match(html, /Past performance\. Personal research project\. Not financial advice/);
   assert.match(html, /mailto:aaraven99@gmail\.com/);
   assert.match(html, /linkedin\.com\/in\/aarav-shah-eng/);

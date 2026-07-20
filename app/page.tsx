@@ -174,7 +174,19 @@ export default function Home() {
             <article className="lead-card reveal"><span>YOUNG JAINS OF AMERICA</span><h3>Local Representative</h3><p>Organizing community events, supporting youth engagement, and advancing Jain cultural education.</p><ul><li>Public speaking</li><li>Project management</li><li>Community building</li></ul></article>
             <div className="lead-quote reveal"><p>Leadership is another feedback loop:</p><strong>Listen → align → act → learn.</strong></div>
           </div>
-          <div className="awards reveal"><p className="micro">HONORS / SIGNALS OF PROGRESS</p>{portfolio.awards.map((award) => <article key={award.title}><strong>{award.title}</strong><span>{award.detail}</span></article>)}</div>
+          <div className="awards reveal">
+            <p className="micro">HONORS / SIGNALS OF PROGRESS</p>
+            {portfolio.awards.map((award) => (
+              <article key={award.title + award.detail}>
+                <strong>{award.title}</strong>
+                <div className="award-copy">
+                  <span>{award.detail}</span>
+                  {award.meta && <small>{award.meta}</small>}
+                  {award.description && <p>{award.description}</p>}
+                </div>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section className="skills-section">

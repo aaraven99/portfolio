@@ -67,8 +67,14 @@ export const portfolio = {
     { year: "2029", title: "Next launch point", text: "Expected graduation: May 2029." },
   ],
   awards: [
-    { title: "3rd Place", detail: "UIL State Marching Band Championships" },
-    { title: "Top 25%", detail: "Geometry · Stanford Math Tournament" },
+    { title: "3rd Place", detail: "UIL State Marching Band Championships", meta: "", description: "" },
+    { title: "Top 25%", detail: "Geometry · Stanford Math Tournament", meta: "", description: "" },
+    {
+      title: "480",
+      detail: "PLTW Introduction to Engineering Design EOC",
+      meta: "Distinguished · May 2026 · Panther Creek High School",
+      description: "Highest possible achievement tier on the national Project Lead The Way assessment, evaluating proficiency in 3D modeling, the engineering design process, and technical documentation.",
+    },
   ],
   coursework: ["AP Precalculus", "AP Human Geography"],
   languages: ["Gujarati · limited working proficiency", "Spanish · elementary proficiency"],
