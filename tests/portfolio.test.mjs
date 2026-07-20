@@ -43,5 +43,7 @@ test("keeps content centralized and accessibility fallbacks present", async () =
   assert.match(content, /projects:/);
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.match(css, /focus-visible/);
+  assert.match(css, /background:rgba\(16,18,15,\.94\)/);
+  assert.doesNotMatch(page, /SystemVisual|RobotBlueprint|trace-bars/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 });

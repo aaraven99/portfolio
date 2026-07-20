@@ -14,34 +14,14 @@ function ChapterHeader({ number, label, title }: { number: string; label: string
   );
 }
 
-function SystemVisual() {
-  return (
-    <div className="system-visual" aria-label="Abstract visualization connecting code, markets, mechanics, music, and leadership" role="img">
-      <div className="orbit orbit-a"><span>CODE</span></div>
-      <div className="orbit orbit-b"><span>CAPITAL</span></div>
-      <div className="orbit orbit-c"><span>MOTION</span></div>
-      <div className="core"><b>AS</b><small>FRISCO / TX</small></div>
-      <i className="spark spark-1" /><i className="spark spark-2" /><i className="spark spark-3" />
-    </div>
-  );
-}
-
 function DataTrace() {
   return (
-    <div className="data-trace" aria-hidden="true">
-      <div className="trace-bars">{Array.from({ length: 32 }, (_, i) => <i key={i} style={{ height: `${18 + ((i * 17) % 66)}%` }} />)}</div>
-      <div className="trace-line"><span /><span /><span /><span /><span /><span /></div>
-      <div className="trace-labels"><span>SCAN / 04:12</span><span>HUMAN VALIDATION: ON</span></div>
-    </div>
-  );
-}
-
-function RobotBlueprint() {
-  return (
-    <div className="robot-blueprint" aria-label="Abstract mecanum robot blueprint" role="img">
-      <div className="bot-body"><div className="launcher" /><div className="bot-core">31053</div></div>
-      <i className="wheel w1" /><i className="wheel w2" /><i className="wheel w3" /><i className="wheel w4" />
-      <span className="dimension dx">360° MOTION</span><span className="dimension dy">ITERATE / REDUCE / REFINE</span>
+    <div className="data-trace" aria-label="Illustrative upward trend line with normal pullbacks" role="img">
+      <div className="trace-axis"><span>RELATIVE SIGNAL STRENGTH</span><span>TIME →</span></div>
+      <div className="trace-area" />
+      <div className="trace-line" />
+      <div className="trace-points"><i /><i /><i /><i /><i /></div>
+      <div className="trace-labels"><span>SCAN / FILTER / VALIDATE</span><span>HUMAN IN THE LOOP: ON</span></div>
     </div>
   );
 }
@@ -120,7 +100,6 @@ export default function Home() {
             <p>{portfolio.statement}</p>
             <button className="round-link" onClick={() => goTo("build")} aria-label="Begin the story">BEGIN <span>↓</span></button>
           </div>
-          <SystemVisual />
         </section>
 
         <section className="manifesto light-section">
@@ -144,7 +123,11 @@ export default function Home() {
           <ChapterHeader number="02" label="BUILD" title="Make motion measurable." />
           <div className="case-layout">
             <div className="case-copy reveal"><p className="eyebrow">{portfolio.projects.robotics.eyebrow}</p><h3>{portfolio.projects.robotics.title}</h3><p className="lede">{portfolio.projects.robotics.summary}</p><div className="tags">{portfolio.projects.robotics.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
-            <RobotBlueprint />
+            <div className="build-specs reveal" aria-label="Robotics project specifications">
+              <article><span>CHASSIS</span><strong>360°</strong><p>High-speed mecanum movement</p></article>
+              <article><span>MECHANISM</span><strong>PRECISION</strong><p>Projectile-launching system</p></article>
+              <article><span>WORKFLOW</span><strong>CAD → TEST</strong><p>Model, fabricate, reduce, refine</p></article>
+            </div>
           </div>
           <div className="phase-grid">{portfolio.projects.robotics.phases.map((phase, index) => <article className="phase reveal" key={phase.label}><span>0{index + 1}</span><h4>{phase.label}</h4><p>{phase.text}</p></article>)}</div>
         </section>
