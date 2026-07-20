@@ -42,11 +42,14 @@ function ProductMoment({ type, index, eyebrow, title, copy, detail }: { type: 'w
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const [progress, setProgress] = useState(0)
+  const sketchfabUrl = type === 'tuba'
+    ? 'https://sketchfab.com/models/023787d702b7438cbf076884661b4cb8/embed?autospin=1&autostart=1&camera=0&transparent=1'
+    : 'https://sketchfab.com/models/11f4092f46984ffdb53511493041b48a/embed?autospin=1&autostart=1&camera=0&transparent=1'
   const copyY = useTransform(scrollYProgress, [0, .5, 1], [70, 0, -70])
   const opacity = useTransform(scrollYProgress, [0, .18, .82, 1], [0, 1, 1, 0])
   useMotionValueEvent(scrollYProgress, 'change', setProgress)
   return <section ref={ref} className={`product-moment product-${type}`}>
-    <div className="product-pin"><motion.div style={{ y: copyY, opacity }} className="product-copy"><Eyebrow>{eyebrow}</Eyebrow><span className="product-index">{index}</span><h2>{title}</h2><p>{copy}</p><small>{detail}</small></motion.div><div className="product-object"><div className="object-microcopy">SCROLL TO EXPLORE <span>↓</span></div>{type === 'tuba' ? <iframe className="sketchfab-tuba" title="Interactive 3D tuba" allowFullScreen allow="autoplay; fullscreen; xr-spatial-tracking" src="https://sketchfab.com/models/023787d702b7438cbf076884661b4cb8/embed?autospin=1&autostart=1&camera=0&transparent=1"/> : <Suspense fallback={<div className="core-loader">LOADING OBJECT</div>}><FeatureScene type={type} progress={progress} /></Suspense>}<div className="object-axis axis-x"/><div className="object-axis axis-y"/></div></div>
+    <div className="product-pin"><motion.div style={{ y: copyY, opacity }} className="product-copy"><Eyebrow>{eyebrow}</Eyebrow><span className="product-index">{index}</span><h2>{title}</h2><p>{copy}</p><small>{detail}</small></motion.div><div className="product-object"><div className="object-microcopy">SCROLL TO EXPLORE <span>↓</span></div><iframe className="sketchfab-model" title={type === 'tuba' ? 'Interactive 3D tuba' : 'Interactive 3D mecanum wheel'} allowFullScreen allow="autoplay; fullscreen; xr-spatial-tracking" src={sketchfabUrl}/><div className="object-axis axis-x"/><div className="object-axis axis-y"/></div></div>
   </section>
 }
 
