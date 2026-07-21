@@ -4,7 +4,9 @@ A responsive, interactive personal portfolio exploring robotics, quantitative fi
 
 ## Live website
 
-[aaravshah-29.vercel.app](https://aaravshah-29.vercel.app)
+[aaravshahportfolio.vercel.app](https://aaravshahportfolio.vercel.app)
+
+The Vercel project should use `Portfolio/` as its Root Directory. This repository keeps the app in that folder so the portfolio source and its deployment configuration stay together.
 
 ## Local development
 
