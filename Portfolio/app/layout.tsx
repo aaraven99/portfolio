@@ -10,17 +10,17 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
   metadataBase: base,
   title: "Aarav Shah — Systems in Motion",
-  description: "Aarav Shah is a high-school builder, strategist, musician, and systems thinker working across robotics, quantitative research, engineering, and leadership.",
-  keywords: ["Aarav Shah", "robotics", "quantitative research", "engineering", "Frisco Texas", "student portfolio"],
+  description: "Aarav Shah's portfolio: robotics, quantitative-finance research, engineering, music, and leadership.",
+  keywords: ["Aarav Shah", "quantitative finance", "backtesting", "robotics", "engineering", "Frisco Texas", "student portfolio"],
   authors: [{ name: "Aarav Shah" }],
   openGraph: {
-    title: "Aarav Shah — Systems in Motion",
-    description: "Different systems. One mindset: disciplined improvement.",
+    title: "Aarav Shah — Quantitative Finance Collection",
+    description: "Ten quantitative-finance systems built with disciplined assumptions and reproducible research.",
     type: "website",
     siteName: "Aarav Shah — Systems in Motion",
-    images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Aarav Shah — Systems in Motion" }],
+    images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Aarav Shah quantitative finance collection" }],
   },
-  twitter: { card: "summary_large_image", title: "Aarav Shah — Systems in Motion", description: "Different systems. One mindset: disciplined improvement.", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", title: "Aarav Shah — Quantitative Finance Collection", description: "Ten quantitative-finance systems built with disciplined assumptions and reproducible research.", images: ["/og.png"] },
   };
 }
 

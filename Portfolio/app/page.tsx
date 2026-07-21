@@ -141,6 +141,15 @@ export default function Home() {
           <div className="phase-grid dark">{portfolio.projects.trading.phases.map((phase, index) => <article className="phase reveal" key={phase.label}><span>0{index + 1}</span><h4>{phase.label}</h4><p>{phase.text}</p></article>)}</div>
         </section>
 
+        <section className="quant-section light-section" aria-labelledby="quant-work-title">
+          <div className="quant-heading reveal"><p className="micro">RESEARCH / QUANTITATIVE FINANCE</p><h2 id="quant-work-title">Ten systems.<br /><em>One disciplined process.</em></h2><p>Independent tools for testing ideas, pricing uncertainty, modeling markets, and making assumptions explicit.</p></div>
+          <div className="quant-grid">
+            {portfolio.quantProjects.map((project, index) => <article className="quant-card reveal" key={project.title}>
+              <span>{String(index + 1).padStart(2, "0")}</span><h3>{project.title}</h3><p>{project.summary}</p><div>{project.technologies.map((technology) => <small key={technology}>{technology}</small>)}</div><a href={project.github} target="_blank" rel="noreferrer" aria-label={`Open ${project.title} on GitHub`}>VIEW SOURCE <b aria-hidden="true">↗</b></a>
+            </article>)}
+          </div>
+        </section>
+
         <section id="perform" className="chapter perform-section">
           <ChapterHeader number="04" label="PERFORM" title="Precision you can hear." />
           <div className="performance-stage">

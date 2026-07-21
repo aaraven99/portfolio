@@ -50,6 +50,18 @@ export const portfolio = {
       tags: ["Python", "Quantitative analysis", "Risk management", "Portfolio systems"],
     },
   },
+  quantProjects: [
+    { title: "Quant Backtesting Engine", summary: "Execution-aware backtesting with transaction costs, timing safeguards, and risk reporting.", technologies: ["Python", "pandas", "NumPy"], github: "https://github.com/aaraven99/quant-backtesting-engine" },
+    { title: "Pairs Trading System", summary: "Cointegration screening, hedge-adjusted spread signals, and paper-only order workflows.", technologies: ["Python", "statsmodels", "Alpaca"], github: "https://github.com/aaraven99/pairs-trading-system" },
+    { title: "Black-Scholes Options Lab", summary: "Pricing, Greeks, arbitrage checks, and implied-volatility estimation from first principles.", technologies: ["Python", "SciPy", "NumPy"], github: "https://github.com/aaraven99/black-scholes-options-lab" },
+    { title: "Limit Order Book Simulator", summary: "A deterministic price-time-priority matching engine with partial fills and a trading API.", technologies: ["Python", "Flask", "WebSockets"], github: "https://github.com/aaraven99/limit-order-book-simulator" },
+    { title: "Market Sentiment Correlation", summary: "Permitted-headline parsing and cautious forward-return sentiment research.", technologies: ["Python", "BeautifulSoup", "pandas"], github: "https://github.com/aaraven99/market-sentiment-correlation" },
+    { title: "Portfolio Optimizer", summary: "Constrained mean-variance allocation for minimum risk, maximum Sharpe, and target returns.", technologies: ["Python", "SciPy", "Plotly"], github: "https://github.com/aaraven99/markowitz-portfolio-optimizer" },
+    { title: "Monte Carlo Risk Lab", summary: "Seeded vectorized simulation for option prices, confidence intervals, VaR, and CVaR.", technologies: ["Python", "NumPy", "SciPy"], github: "https://github.com/aaraven99/monte-carlo-risk-lab" },
+    { title: "Volatility Surface Visualizer", summary: "Option-chain cleaning, log-moneyness normalization, and interpolated volatility surfaces.", technologies: ["Python", "SciPy", "Plotly"], github: "https://github.com/aaraven99/volatility-surface-visualizer" },
+    { title: "Fama-French Factor Model", summary: "Three-factor return attribution and alpha-significance testing.", technologies: ["Python", "statsmodels", "pandas"], github: "https://github.com/aaraven99/fama-french-factor-model" },
+    { title: "Real-Time Market Dashboard", summary: "Responsive market interface with mock streaming, price statistics, and moving averages.", technologies: ["React", "TypeScript", "Recharts"], github: "https://github.com/aaraven99/realtime-market-dashboard" },
+  ],
   skills: [
     { name: "Python", domain: "Code", level: 88 },
     { name: "Java", domain: "Code", level: 72 },
