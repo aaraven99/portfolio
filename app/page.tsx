@@ -16,12 +16,11 @@ function ChapterHeader({ number, label, title }: { number: string; label: string
 
 function DataTrace() {
   return (
-    <div className="data-trace" aria-label="Illustrative upward trend line with normal pullbacks" role="img">
-      <div className="trace-axis"><span>RELATIVE SIGNAL STRENGTH</span><span>TIME →</span></div>
+    <div className="data-trace" aria-label="Illustrative portfolio value trend over time with normal pullbacks" role="img">
+      <div className="trace-axis"><span>PORTFOLIO VALUE</span><span>TIME →</span></div>
       <div className="trace-area" />
       <div className="trace-line" />
       <div className="trace-points"><i /><i /><i /><i /><i /></div>
-      <div className="trace-labels"><span>SCAN / FILTER / VALIDATE</span><span>HUMAN IN THE LOOP: ON</span></div>
     </div>
   );
 }

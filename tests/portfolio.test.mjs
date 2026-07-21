@@ -38,6 +38,9 @@ test("keeps content centralized and accessibility fallbacks present", async () =
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
   assert.match(page, /from "\.\/content"/);
+  assert.match(page, /PORTFOLIO VALUE/);
+  assert.match(page, /TIME/);
+  assert.doesNotMatch(page, /RELATIVE SIGNAL STRENGTH|SCAN \/ FILTER \/ VALIDATE|HUMAN IN THE LOOP/);
   assert.match(content, /chapters:/);
   assert.match(content, /metrics:/);
   assert.match(content, /projects:/);
