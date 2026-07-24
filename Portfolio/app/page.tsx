@@ -145,7 +145,7 @@ export default function Home() {
           <div className="quant-heading reveal"><p className="micro">RESEARCH / QUANTITATIVE FINANCE</p><h2 id="quant-work-title">Ten systems.<br /><em>One disciplined process.</em></h2><p>Independent tools for testing ideas, pricing uncertainty, modeling markets, and making assumptions explicit.</p></div>
           <div className="quant-grid">
             {portfolio.quantProjects.map((project, index) => <article className="quant-card reveal" key={project.title}>
-              <span>{String(index + 1).padStart(2, "0")}</span><h3>{project.title}</h3><p>{project.summary}</p><div>{project.technologies.map((technology) => <small key={technology}>{technology}</small>)}</div><a href={project.github} target="_blank" rel="noreferrer" aria-label={`Open ${project.title} on GitHub`}>VIEW SOURCE <b aria-hidden="true">↗</b></a>
+              <span>{String(index + 1).padStart(2, "0")}</span><h3>{project.title}</h3><p>{project.summary}</p><div>{project.technologies.map((technology) => <small key={technology}>{technology}</small>)}</div><div className="quant-links">{"live" in project && project.live ? <a href={project.live} target="_blank" rel="noreferrer" aria-label={`Open live ${project.title}`}>OPEN LIVE <b aria-hidden="true">↗</b></a> : null}<a href={project.github} target="_blank" rel="noreferrer" aria-label={`Open ${project.title} on GitHub`}>VIEW SOURCE <b aria-hidden="true">↗</b></a></div>
             </article>)}
           </div>
         </section>
