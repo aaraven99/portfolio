@@ -38,12 +38,17 @@ test("keeps content centralized and accessibility fallbacks present", async () =
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
   assert.match(page, /from "\.\/content"/);
-  assert.match(page, /PORTFOLIO VALUE/);
-  assert.match(page, /TIME/);
+  assert.doesNotMatch(page, /PORTFOLIO VALUE|TIME →|DataTrace/);
   assert.doesNotMatch(page, /RELATIVE SIGNAL STRENGTH|SCAN \/ FILTER \/ VALIDATE|HUMAN IN THE LOOP/);
+  assert.doesNotMatch(page, /ON THE SYSTEM|OFF THE SYSTEM|OPEN TO EXPLORING|quantProjects|Quant Backtesting Lab/);
+  assert.doesNotMatch(page, /explore-wheel/);
+  assert.match(content, /Precision, consistency, and teamwork under pressure\./);
+  assert.match(content, /Recognized among the top quarter of competitors\./);
   assert.match(content, /chapters:/);
   assert.match(content, /metrics:/);
   assert.match(content, /projects:/);
+  assert.match(content, /leadRoles:/);
+  assert.match(page, /portfolio\.leadRoles\.map/);
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.match(css, /focus-visible/);
   assert.match(css, /background:rgba\(16,18,15,\.94\)/);

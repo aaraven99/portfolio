@@ -14,22 +14,10 @@ function ChapterHeader({ number, label, title }: { number: string; label: string
   );
 }
 
-function DataTrace() {
-  return (
-    <div className="data-trace" aria-label="Illustrative portfolio value trend over time with normal pullbacks" role="img">
-      <div className="trace-axis"><span>PORTFOLIO VALUE</span><span>TIME →</span></div>
-      <div className="trace-area" />
-      <div className="trace-line" />
-      <div className="trace-points"><i /><i /><i /><i /><i /></div>
-    </div>
-  );
-}
-
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
   const [active, setActive] = useState<ChapterId>("intro");
   const [progress, setProgress] = useState(0);
-  const [mode, setMode] = useState<"system" | "human">("system");
   const [cursor, setCursor] = useState({ x: -80, y: -80, active: false });
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -70,8 +58,8 @@ export default function Home() {
       <div className="progress" aria-hidden="true"><i style={{ transform: `scaleX(${progress})` }} /></div>
 
       <header className="site-header">
-        <button className="brand" onClick={() => goTo("intro")} aria-label="Back to intro"><span>AS</span><small>Systems in Motion</small></button>
-        <div className="header-meta"><span>FRISCO, TX</span><span className="status"><i /> OPEN TO EXPLORING</span></div>
+        <button className="brand" onClick={() => goTo("intro")} aria-label="Back to intro"><small>Systems in Motion</small></button>
+        <div className="header-meta"><span>FRISCO, TX</span></div>
         <button className="menu-button" aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? "CLOSE" : "CHAPTERS"}</button>
       </header>
 
@@ -104,14 +92,6 @@ export default function Home() {
         <section className="manifesto light-section">
           <p className="micro reveal">THE OPERATING PRINCIPLE</p>
           <h2 className="reveal">I work across <em>code, capital, machines, music,</em> and <em>community.</em> Each rewards the same thing: disciplined improvement.</h2>
-          <div className="mode-switch reveal" role="group" aria-label="Identity lens">
-            <button className={mode === "system" ? "selected" : ""} onClick={() => setMode("system")}>ON THE SYSTEM</button>
-            <button className={mode === "human" ? "selected" : ""} onClick={() => setMode("human")}>OFF THE SYSTEM</button>
-          </div>
-          <div className={`mode-panel ${mode}`}>
-            <span>{mode === "system" ? "ANALYZE / DESIGN / TEST / REFINE" : "LISTEN / PERFORM / SERVE / LEAD"}</span>
-            <p>{mode === "system" ? "Turning ambiguity into measurable, improvable loops." : "Building the judgment, timing, and trust that no model can replace."}</p>
-          </div>
         </section>
 
         <section className="metrics-strip" aria-label="Key metrics">
@@ -137,17 +117,7 @@ export default function Home() {
             <div className="return-card reveal"><span>FIVE-MONTH PERIOD</span><strong>+120%</strong><p>Portfolio return</p><small>Past performance. Personal research project. Not financial advice and not indicative of future results.</small></div>
             <div className="case-copy reveal"><p className="eyebrow">{portfolio.projects.trading.eyebrow}</p><h3>{portfolio.projects.trading.title}</h3><p className="lede">{portfolio.projects.trading.summary}</p><div className="tags">{portfolio.projects.trading.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
           </div>
-          <DataTrace />
           <div className="phase-grid dark">{portfolio.projects.trading.phases.map((phase, index) => <article className="phase reveal" key={phase.label}><span>0{index + 1}</span><h4>{phase.label}</h4><p>{phase.text}</p></article>)}</div>
-        </section>
-
-        <section className="quant-section light-section" aria-labelledby="quant-work-title">
-          <div className="quant-heading reveal"><p className="micro">RESEARCH / QUANTITATIVE FINANCE</p><h2 id="quant-work-title">Ten systems.<br /><em>One disciplined process.</em></h2><p>Independent tools for testing ideas, pricing uncertainty, modeling markets, and making assumptions explicit.</p></div>
-          <div className="quant-grid">
-            {portfolio.quantProjects.map((project, index) => <article className="quant-card reveal" key={project.title}>
-              <span>{String(index + 1).padStart(2, "0")}</span><h3>{project.title}</h3><p>{project.summary}</p><div>{project.technologies.map((technology) => <small key={technology}>{technology}</small>)}</div><div className="quant-links">{"live" in project && project.live ? <a href={project.live} target="_blank" rel="noreferrer" aria-label={`Open live ${project.title}`}>OPEN LIVE <b aria-hidden="true">↗</b></a> : null}<a href={project.github} target="_blank" rel="noreferrer" aria-label={`Open ${project.title} on GitHub`}>VIEW SOURCE <b aria-hidden="true">↗</b></a></div>
-            </article>)}
-          </div>
         </section>
 
         <section id="perform" className="chapter perform-section">
@@ -162,7 +132,7 @@ export default function Home() {
         <section id="lead" className="chapter lead-section light-section">
           <ChapterHeader number="05" label="LEAD" title="Build the room, not just the result." />
           <div className="lead-grid">
-            <article className="lead-card reveal"><span>YOUNG JAINS OF AMERICA</span><h3>Local Representative</h3><p>Organizing community events, supporting youth engagement, and advancing Jain cultural education.</p><ul><li>Public speaking</li><li>Project management</li><li>Community building</li></ul></article>
+            {portfolio.leadRoles.map((role) => <article className="lead-card reveal" key={role.organization}><span>{role.organization}</span><h3>{role.role}</h3><p>{role.summary}</p><ul>{role.skills.map((skill) => <li key={skill}>{skill}</li>)}</ul></article>)}
             <div className="lead-quote reveal"><p>Leadership is another feedback loop:</p><strong>Listen → align → act → learn.</strong></div>
           </div>
           <div className="awards reveal">
@@ -192,8 +162,7 @@ export default function Home() {
         <section id="future" className="chapter future-section">
           <ChapterHeader number="06" label="FUTURE" title="The next system is already moving." />
           <div className="future-layout">
-            <div className="explore-wheel" aria-hidden="true"><div>?</div>{portfolio.explorations.map((item, index) => <span key={item} style={{ transform: `rotate(${index * 72}deg) translateY(-10rem) rotate(${-index * 72}deg)` }}>{String(index + 1).padStart(2, "0")}</span>)}</div>
-            <div className="explore-list">{portfolio.explorations.map((item, index) => <article className="reveal" key={item}><span>0{index + 1}</span><h3>{item}</h3><Arrow /></article>)}</div>
+            <div className="explore-list">{portfolio.explorations.map((item, index) => <article className="reveal" key={item}><span>0{index + 1}</span><h3>{item}</h3></article>)}</div>
           </div>
           <div className="education-grid reveal"><div><span>EDUCATION</span><h3>{portfolio.person.school}</h3><p>2025–2029 · Expected graduation {portfolio.person.graduation}</p></div><div><span>COURSEWORK</span><p>{portfolio.coursework.join(" · ")}</p></div><div><span>LANGUAGES</span><p>{portfolio.languages.join(" · ")}</p></div></div>
         </section>

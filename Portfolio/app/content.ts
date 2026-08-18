@@ -50,18 +50,6 @@ export const portfolio = {
       tags: ["Python", "Quantitative analysis", "Risk management", "Portfolio systems"],
     },
   },
-  quantProjects: [
-    { title: "Quant Backtesting Lab", summary: "Configure trading strategies, model execution costs, inspect trades, and analyze returns, drawdowns, risk, and benchmark performance through an interactive backtesting dashboard.", technologies: ["Next.js", "FastAPI", "pandas"], github: "https://github.com/aaraven99/quant-backtesting-engine", live: "https://quant-backtesting-engine.vercel.app" },
-    { title: "Pairs Trading System", summary: "Cointegration screening, hedge-adjusted spread signals, and paper-only order workflows.", technologies: ["Python", "statsmodels", "Alpaca"], github: "https://github.com/aaraven99/pairs-trading-system" },
-    { title: "Options Pricing Lab", summary: "Explore Black-Scholes pricing, Greeks, implied volatility, payoff profiles, and multidimensional sensitivity scenarios through an interactive derivatives-analysis interface.", technologies: ["Next.js", "FastAPI", "SciPy"], github: "https://github.com/aaraven99/black-scholes-options-lab", live: "https://black-scholes-options-lab.vercel.app" },
-    { title: "Exchange Simulator", summary: "Submit market and limit orders, observe price-time-priority matching, and replay educational market-microstructure scenarios in a real-time exchange simulation.", technologies: ["Next.js", "TypeScript", "Vitest"], github: "https://github.com/aaraven99/limit-order-book-simulator", live: "https://limit-order-book-simulator-tau.vercel.app" },
-    { title: "Market Sentiment Correlation", summary: "Finnhub company-news ingestion and cautious forward-return sentiment research.", technologies: ["Python", "Finnhub", "pandas"], github: "https://github.com/aaraven99/market-sentiment-correlation" },
-    { title: "Portfolio Optimization Lab", summary: "Build constrained portfolios, generate an efficient frontier, and compare maximum-Sharpe, minimum-volatility, equal-weight, and custom allocations.", technologies: ["Next.js", "FastAPI", "SciPy"], github: "https://github.com/aaraven99/markowitz-portfolio-optimizer", live: "https://markowitz-portfolio-optimizer.vercel.app" },
-    { title: "Monte Carlo Risk Lab", summary: "Simulate asset paths, price options, measure statistical convergence, and analyze portfolio VaR, CVaR, loss probabilities, and terminal-value distributions.", technologies: ["Next.js", "FastAPI", "NumPy"], github: "https://github.com/aaraven99/monte-carlo-risk-lab", live: "https://monte-carlo-risk-lab.vercel.app" },
-    { title: "Volatility Surface Lab", summary: "Clean option-chain data, solve implied volatility, inspect smiles and term structures, and explore an interactive three-dimensional volatility surface.", technologies: ["Next.js", "Plotly", "SciPy"], github: "https://github.com/aaraven99/volatility-surface-visualizer", live: "https://volatility-surface-visualizer.vercel.app" },
-    { title: "Fama-French Factor Model", summary: "Three-factor return attribution and alpha-significance testing.", technologies: ["Python", "statsmodels", "pandas"], github: "https://github.com/aaraven99/fama-french-factor-model" },
-    { title: "Live Market Terminal", summary: "Explore streaming or simulated OHLCV data, candlestick charts, moving averages, watchlists, and resilient connection behavior through a responsive market terminal.", technologies: ["React", "TypeScript", "yfinance"], github: "https://github.com/aaraven99/realtime-market-dashboard", live: "https://realtime-market-dashboard-kappa.vercel.app" },
-  ],
   skills: [
     { name: "Python", domain: "Code", level: 88 },
     { name: "Java", domain: "Code", level: 72 },
@@ -78,9 +66,33 @@ export const portfolio = {
     { year: "Now", title: "Building across systems", text: "Connecting code, markets, robotics, music, and community through deliberate practice." },
     { year: "2029", title: "Next launch point", text: "Expected graduation: May 2029." },
   ],
+  leadRoles: [
+    {
+      organization: "YOUNG JAINS OF AMERICA",
+      role: "Local Representative",
+      summary: "Organizing community events, supporting youth engagement, and advancing Jain cultural education.",
+      skills: ["Public speaking", "Project management", "Community building"],
+    },
+    {
+      organization: "BRIGHT INNOVATORS ACADEMY · FTC TEAM 31053",
+      role: "Lead Engineer",
+      summary: "Architecting a high-speed mecanum chassis, iterating a projectile-launching system, and contributing Java to autonomous and tele-op modes.",
+      skills: ["CAD & fabrication", "Java", "Mechanical design"],
+    },
+  ],
   awards: [
-    { title: "3rd Place", detail: "UIL State Marching Band Championships", meta: "", description: "" },
-    { title: "Top 25%", detail: "Geometry · Stanford Math Tournament", meta: "", description: "" },
+    {
+      title: "3rd Place",
+      detail: "UIL State Marching Band Championships",
+      meta: "Panther Creek · Marching band",
+      description: "Precision, consistency, and teamwork under pressure.",
+    },
+    {
+      title: "Top 25%",
+      detail: "Geometry · Stanford Math Tournament",
+      meta: "Top quartile · Geometry",
+      description: "Recognized among the top quarter of competitors.",
+    },
     {
       title: "480",
       detail: "PLTW Introduction to Engineering Design EOC",
