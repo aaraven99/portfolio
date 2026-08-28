@@ -8,19 +8,24 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
   const base = new URL(`${protocol}://${host}`);
   return {
-  metadataBase: base,
-  title: "Aarav Shah — Systems in Motion",
-  description: "Aarav Shah's portfolio: robotics, quantitative-finance research, engineering, music, and leadership.",
-  keywords: ["Aarav Shah", "quantitative finance", "backtesting", "robotics", "engineering", "Frisco Texas", "student portfolio"],
-  authors: [{ name: "Aarav Shah" }],
-  openGraph: {
-    title: "Aarav Shah — Quantitative Finance Collection",
-    description: "Ten quantitative-finance systems built with disciplined assumptions and reproducible research.",
-    type: "website",
-    siteName: "Aarav Shah — Systems in Motion",
-    images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Aarav Shah quantitative finance collection" }],
-  },
-  twitter: { card: "summary_large_image", title: "Aarav Shah — Quantitative Finance Collection", description: "Ten quantitative-finance systems built with disciplined assumptions and reproducible research.", images: ["/og.png"] },
+    metadataBase: base,
+    title: "Aarav Shah — Systems in Motion",
+    description: "Aarav Shah's portfolio across robotics, quantitative research, engineering, music, and community leadership.",
+    keywords: ["Aarav Shah", "robotics", "quantitative finance", "engineering", "music", "leadership", "Frisco Texas", "student portfolio"],
+    authors: [{ name: "Aarav Shah" }],
+    openGraph: {
+      title: "Aarav Shah — Systems in Motion",
+      description: "Aarav Shah's portfolio across robotics, quantitative research, engineering, music, and community leadership.",
+      type: "website",
+      siteName: "Aarav Shah — Systems in Motion",
+      images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Aarav Shah — Systems in Motion portfolio" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Aarav Shah — Systems in Motion",
+      description: "Aarav Shah's portfolio across robotics, quantitative research, engineering, music, and community leadership.",
+      images: ["/og.png"],
+    },
   };
 }
 

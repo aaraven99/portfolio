@@ -19,6 +19,8 @@ test("server-renders the complete portfolio and metadata", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<title>Aarav Shah — Systems in Motion<\/title>/i);
+  assert.match(html, /og:title[^>]+Aarav Shah — Systems in Motion/);
+  assert.doesNotMatch(html, /Quantitative Finance Collection|Ten quantitative-finance systems/);
   assert.match(html, /Different systems\. One mindset: disciplined improvement\./);
   assert.match(html, /FTC Team 31053/);
   assert.match(html, /PLTW Introduction to Engineering Design EOC/);
