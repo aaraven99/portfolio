@@ -63,7 +63,9 @@ test("keeps content centralized and accessibility fallbacks present", async () =
   assert.match(page, /aria-expanded=\{isOpen\}/);
   assert.match(page, /Market research process/);
   assert.match(page, /skill-marquee-row/);
-  assert.match(page, /aria-pressed=\{motionPaused\}/);
+  assert.match(page, /updatePlaybackRate\(rate\)/);
+  assert.doesNotMatch(page, /motionPaused|Pause motion|Resume motion/);
+  assert.doesNotMatch(css, /animation-duration:\s*150s/);
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /focus-visible/);
   assert.match(css, /scroll-hint/);

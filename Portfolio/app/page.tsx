@@ -4,12 +4,22 @@ import { Fragment, useEffect, useState } from "react";
 import { portfolio } from "./content";
 
 const Arrow = () => <span className="link-arrow" aria-hidden="true">↗</span>;
-const allSkills = portfolio.skills.flatMap((group) => group.items);
+type SkillEntry = { readonly name: string; readonly detail: string };
+const allSkills: SkillEntry[] = [];
+for (const group of portfolio.skills) {
+  for (const item of group.items) allSkills.push(item);
+}
 const skillRows = Array.from({ length: 3 }, (_, rowIndex) =>
   allSkills
     .map((item, skillIndex) => ({ item, skillIndex }))
     .filter((_, skillIndex) => skillIndex % 3 === rowIndex),
 );
+
+function setSkillPlaybackRate(row: HTMLDivElement, rate: number) {
+  row.querySelectorAll<HTMLElement>(".skill-track").forEach((track) => {
+    track.getAnimations().forEach((animation) => animation.updatePlaybackRate(rate));
+  });
+}
 
 function SectionHeading({ title }: { title: string }) {
   return (
@@ -43,21 +53,9 @@ function StepFlow({
 
 function SkillBubbles() {
   const [openSkill, setOpenSkill] = useState<string | null>(null);
-  const [motionPaused, setMotionPaused] = useState(false);
 
   return (
-    <section className={"skill-marquee" + (motionPaused ? " is-paused" : "")} aria-label="Skills and experience">
-      <div className="skill-marquee-controls">
-        <button
-          className="motion-toggle"
-          type="button"
-          aria-pressed={motionPaused}
-          aria-controls="skill-marquee-rows"
-          onClick={() => setMotionPaused(!motionPaused)}
-        >
-          {motionPaused ? "Resume motion" : "Pause motion"}
-        </button>
-      </div>
+    <section className="skill-marquee" aria-label="Skills and experience">
       <div className="skill-marquee-rows" id="skill-marquee-rows">
         {skillRows.map((row, rowIndex) => {
           const rowIsExpanded = row.some(({ skillIndex }) => openSkill === `skill-${skillIndex}`);
@@ -66,6 +64,14 @@ function SkillBubbles() {
               className={"skill-marquee-row" + (rowIsExpanded ? " is-expanded" : "")}
               role="group"
               aria-label={`Skills row ${rowIndex + 1}`}
+              onPointerEnter={(event) => setSkillPlaybackRate(event.currentTarget, 0.35)}
+              onPointerLeave={(event) => {
+                if (!event.currentTarget.matches(":focus-within")) setSkillPlaybackRate(event.currentTarget, 1);
+              }}
+              onFocus={(event) => setSkillPlaybackRate(event.currentTarget, 0.35)}
+              onBlur={(event) => {
+                if (!event.currentTarget.matches(":hover")) setSkillPlaybackRate(event.currentTarget, 1);
+              }}
               key={rowIndex}
             >
               <div className="skill-track">

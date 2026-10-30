@@ -318,19 +318,6 @@ button:focus-visible, a:focus-visible {
 
 .skills-section { background: var(--ink); }
 .skill-marquee { margin-top: 1rem; }
-.skill-marquee-controls { display: flex; justify-content: flex-start; margin-bottom: 1rem; }
-.motion-toggle {
-  padding: .45rem 0;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  background: transparent;
-  color: var(--muted);
-  font-size: .65rem;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-.motion-toggle:hover, .motion-toggle:focus-visible { color: var(--paper); border-color: var(--lime); }
 .skill-marquee-rows { display: grid; gap: .8rem; overflow: hidden; }
 .skill-marquee-row {
   width: 100%;
@@ -351,10 +338,6 @@ button:focus-visible, a:focus-visible {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
 }
-.skill-marquee-row:hover .skill-track,
-.skill-marquee-row:focus-within .skill-track { animation-duration: 150s; }
-.skill-marquee-row.is-expanded .skill-track,
-.skill-marquee.is-paused .skill-track { animation-play-state: paused; }
 .skill-marquee-row.is-expanded { overflow: visible; -webkit-mask-image: none; mask-image: none; }
 .skill-marquee-row.is-expanded .skill-track { animation: none; transform: none; width: 100%; }
 .skill-marquee-row.is-expanded .skill-sequence[aria-hidden="true"] { display: none; }
@@ -509,7 +492,6 @@ a:hover .link-arrow { transform: translate(2px, -2px); }
   .lead-card { padding: 1.4rem; }
   .awards-section { margin-top: 4.5rem; }
   .award { grid-template-columns: 1fr; gap: .45rem; padding: 1.2rem 0; }
-  .skill-marquee-controls { margin-bottom: .7rem; }
   .skill-marquee-rows { gap: .55rem; }
   .skill-sequence { gap: .5rem; padding-right: .5rem; }
   .skill-bubble { min-height: 2.7rem; padding: .65rem .8rem; }
@@ -526,7 +508,6 @@ a:hover .link-arrow { transform: translate(2px, -2px); }
   html { scroll-behavior: auto; }
   .has-scroll-reveal .reveal { opacity: 1; transform: none; transition: none; }
   .scroll-cue-arrow { animation: none; }
-  .skill-marquee-controls { display: none; }
   .skill-track { animation: none !important; transform: none; width: 100%; }
   .skill-marquee-rows { overflow: visible; }
   .skill-marquee-row { overflow: visible; -webkit-mask-image: none; mask-image: none; }
