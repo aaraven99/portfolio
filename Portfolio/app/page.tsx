@@ -1,9 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { portfolio } from "./content";
 
 const Arrow = () => <span className="link-arrow" aria-hidden="true">↗</span>;
+const allSkills = portfolio.skills.flatMap((group) => group.items);
+const skillRows = Array.from({ length: 3 }, (_, rowIndex) =>
+  allSkills
+    .map((item, skillIndex) => ({ item, skillIndex }))
+    .filter((_, skillIndex) => skillIndex % 3 === rowIndex),
+);
 
 function SectionHeading({ title }: { title: string }) {
   return (
@@ -21,12 +27,15 @@ function StepFlow({
   steps: readonly { title: string; detail: string }[];
 }) {
   return (
-    <div className="flow-grid" aria-label={label}>
+    <div className="flow-grid" role="group" aria-label={label}>
       {steps.map((step, index) => (
-        <article className={"flow-step flow-step-" + index + " reveal"} key={step.title}>
-          <h3>{step.title}</h3>
-          <p>{step.detail}</p>
-        </article>
+        <Fragment key={step.title}>
+          <article className="flow-step reveal">
+            <h3>{step.title}</h3>
+            <p>{step.detail}</p>
+          </article>
+          {index < steps.length - 1 && <span className="flow-arrow" aria-hidden="true">→</span>}
+        </Fragment>
       ))}
     </div>
   );
@@ -34,37 +43,64 @@ function StepFlow({
 
 function SkillBubbles() {
   const [openSkill, setOpenSkill] = useState<string | null>(null);
+  const [motionPaused, setMotionPaused] = useState(false);
 
   return (
-    <div className="skill-groups">
-      {portfolio.skills.map((group, groupIndex) => (
-        <section className="skill-group reveal" key={group.group} aria-label={group.group}>
-          <h3>{group.group}</h3>
-          <div className="skill-cloud">
-            {group.items.map((item, itemIndex) => {
-              const id = "skill-" + groupIndex + "-" + itemIndex;
-              const isOpen = openSkill === id;
-              return (
-                <button
-                  className="skill-bubble"
-                  type="button"
-                  key={item.name}
-                  aria-expanded={isOpen}
-                  aria-controls={id}
-                  onClick={() => setOpenSkill(isOpen ? null : id)}
-                >
-                  <span className="skill-bubble-top">
-                    <span>{item.name}</span>
-                    <span className="skill-plus" aria-hidden="true">{isOpen ? "−" : "+"}</span>
-                  </span>
-                  <span className="skill-detail" id={id} hidden={!isOpen}>{item.detail}</span>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-      ))}
-    </div>
+    <section className={"skill-marquee" + (motionPaused ? " is-paused" : "")} aria-label="Skills and experience">
+      <div className="skill-marquee-controls">
+        <button
+          className="motion-toggle"
+          type="button"
+          aria-pressed={motionPaused}
+          aria-controls="skill-marquee-rows"
+          onClick={() => setMotionPaused(!motionPaused)}
+        >
+          {motionPaused ? "Resume motion" : "Pause motion"}
+        </button>
+      </div>
+      <div className="skill-marquee-rows" id="skill-marquee-rows">
+        {skillRows.map((row, rowIndex) => {
+          const rowIsExpanded = row.some(({ skillIndex }) => openSkill === `skill-${skillIndex}`);
+          return (
+            <div
+              className={"skill-marquee-row" + (rowIsExpanded ? " is-expanded" : "")}
+              role="group"
+              aria-label={`Skills row ${rowIndex + 1}`}
+              key={rowIndex}
+            >
+              <div className="skill-track">
+                {[false, true].map((isCopy) => (
+                  <div className="skill-sequence" aria-hidden={isCopy || undefined} key={String(isCopy)}>
+                    {row.map(({ item, skillIndex }) => {
+                      const skillId = `skill-${skillIndex}`;
+                      const detailId = `${skillId}-${isCopy ? "copy" : "main"}`;
+                      const isOpen = openSkill === skillId;
+                      return (
+                        <button
+                          className="skill-bubble"
+                          type="button"
+                          key={item.name}
+                          tabIndex={isCopy ? -1 : undefined}
+                          aria-expanded={isOpen}
+                          aria-controls={detailId}
+                          onClick={() => setOpenSkill(isOpen ? null : skillId)}
+                        >
+                          <span className="skill-bubble-top">
+                            <span>{item.name}</span>
+                            <span className="skill-plus" aria-hidden="true">{isOpen ? "−" : "+"}</span>
+                          </span>
+                          <span className="skill-detail" id={detailId} hidden={!isOpen}>{item.detail}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -91,7 +127,9 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <>
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      <main id="main-content">
       <section className="hero" id="top">
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-content">
@@ -101,10 +139,9 @@ export default function Home() {
             <p>{portfolio.person.school} · Class of 2029</p>
             <p>{portfolio.person.location}</p>
           </div>
-          <p className="hero-statement reveal">{portfolio.statement}</p>
         </div>
-        <div className="scroll-cue reveal" aria-hidden="true">
-          <span>Scroll to explore</span><span className="scroll-cue-arrow">↓</span>
+        <div className="scroll-cue reveal">
+          <span>Scroll to explore</span><span className="scroll-cue-arrow" aria-hidden="true">↓</span>
         </div>
       </section>
 
@@ -167,7 +204,6 @@ export default function Home() {
       <section className="music-section" id="music">
         <SectionHeading title={portfolio.music.title} />
         <div className="music-layout">
-          <div className="music-mark reveal" aria-hidden="true">♪</div>
           <div className="music-copy reveal">
             <p className="project-meta">{portfolio.music.instrument} · {portfolio.music.role}</p>
             <p className="project-period">{portfolio.music.period}</p>
@@ -176,11 +212,7 @@ export default function Home() {
         </div>
         <blockquote className="reflection reveal">
           <p>“{portfolio.music.quote.text}”</p>
-          <cite>
-            <a href={portfolio.music.quote.source} target="_blank" rel="noreferrer">
-              — {portfolio.music.quote.author} · interview transcript <Arrow />
-            </a>
-          </cite>
+          <cite>— {portfolio.music.quote.author}</cite>
         </blockquote>
       </section>
 
@@ -253,6 +285,7 @@ export default function Home() {
         <a href={portfolio.person.linkedIn} target="_blank" rel="noreferrer">LinkedIn<Arrow /></a>
         <a href={"mailto:" + portfolio.person.email}>Email<Arrow /></a>
       </footer>
-    </main>
+      </main>
+    </>
   );
 }

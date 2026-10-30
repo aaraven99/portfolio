@@ -20,7 +20,7 @@ test("server-renders the complete portfolio and metadata", async () => {
   const html = await response.text();
   assert.match(html, /<title>Aarav Shah \| Robotics, Markets &amp; Music<\/title>/i);
   assert.match(html, /og:title[^>]+Aarav Shah \| Robotics, Markets &amp; Music/);
-  assert.match(html, /I work across code, capital, machines, music, and community/);
+  assert.doesNotMatch(html, /I work across code, capital, machines, music, and community/);
   assert.match(html, /FTC Team 24290/);
   assert.match(html, /Robo Rulers/);
   assert.match(html, /A Python scanner for swing-trading setups/);
@@ -29,6 +29,7 @@ test("server-renders the complete portfolio and metadata", async () => {
   assert.match(html, /Youth Finance First/);
   assert.match(html, /AP-heavy coursework/);
   assert.match(html, /John Wooden/);
+  assert.doesNotMatch(html, /interview transcript/);
   assert.doesNotMatch(html, /Systems in Motion|CHAPTERS|01 \/ INTRO|02 \/ BUILD|03 \/ TRADE|06 \/ FUTURE/);
   assert.doesNotMatch(html, /DEVELOPMENT LOG|FIELD NOTES|Always improving the system|© /);
   assert.doesNotMatch(html, /FTX Combobulators|FTC Team 31053/);
@@ -61,6 +62,8 @@ test("keeps content centralized and accessibility fallbacks present", async () =
   assert.match(page, /portfolio\.leadRoles\.map/);
   assert.match(page, /aria-expanded=\{isOpen\}/);
   assert.match(page, /Market research process/);
+  assert.match(page, /skill-marquee-row/);
+  assert.match(page, /aria-pressed=\{motionPaused\}/);
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /focus-visible/);
   assert.match(css, /scroll-hint/);

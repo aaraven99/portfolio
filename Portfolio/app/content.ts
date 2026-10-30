@@ -9,8 +9,6 @@ export const portfolio = {
     schoolDates: "August 2025 – May 2029",
     graduation: "May 2029",
   },
-  statement:
-    "I work across code, capital, machines, music, and community. In each, I look for ways to improve.",
   metrics: [
     { value: "+120%", label: "portfolio return", detail: "five-month period" },
     { value: "3rd", label: "UIL State finish", detail: "marching band championships" },
@@ -104,7 +102,6 @@ export const portfolio = {
     quote: {
       text: "I think very definitely it’s the little things that make the big things happen.",
       author: "John Wooden",
-      source: "https://achievement.org/video/john-wooden-14/",
     },
   },
   leadRoles: [
