@@ -1,6 +1,6 @@
-# Aarav Shah — Systems in Motion
+# Aarav Shah — Portfolio
 
-A responsive, interactive personal portfolio exploring robotics, quantitative finance, music, engineering, and leadership through one central idea: **Different systems. One mindset: disciplined improvement.**
+A responsive personal portfolio covering FTC robotics, Python market research, music, community leadership, awards, skills, and coursework.
 
 ## Live website
 

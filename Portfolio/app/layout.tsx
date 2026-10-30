@@ -9,21 +9,21 @@ export async function generateMetadata(): Promise<Metadata> {
   const base = new URL(`${protocol}://${host}`);
   return {
     metadataBase: base,
-    title: "Aarav Shah — Systems in Motion",
-    description: "Aarav Shah's portfolio across robotics, quantitative research, engineering, music, and community leadership.",
-    keywords: ["Aarav Shah", "robotics", "quantitative finance", "engineering", "music", "leadership", "Frisco Texas", "student portfolio"],
+    title: "Aarav Shah | Robotics, Markets & Music",
+    description: "Aarav Shah's work across FTC robotics, Python market research, marching band, community leadership, and academics.",
+    keywords: ["Aarav Shah", "Robo Rulers", "FTC Team 24290", "robotics", "Python", "market research", "music", "leadership", "Frisco Texas", "student portfolio"],
     authors: [{ name: "Aarav Shah" }],
     openGraph: {
-      title: "Aarav Shah — Systems in Motion",
-      description: "Aarav Shah's portfolio across robotics, quantitative research, engineering, music, and community leadership.",
+      title: "Aarav Shah | Robotics, Markets & Music",
+      description: "Aarav Shah's work across FTC robotics, Python market research, marching band, community leadership, and academics.",
       type: "website",
-      siteName: "Aarav Shah — Systems in Motion",
-      images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Aarav Shah — Systems in Motion portfolio" }],
+      siteName: "Aarav Shah",
+      images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Aarav Shah portfolio" }],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Aarav Shah — Systems in Motion",
-      description: "Aarav Shah's portfolio across robotics, quantitative research, engineering, music, and community leadership.",
+      title: "Aarav Shah | Robotics, Markets & Music",
+      description: "Aarav Shah's work across FTC robotics, Python market research, marching band, community leadership, and academics.",
       images: ["/og.png"],
     },
   };

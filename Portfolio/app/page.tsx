@@ -1,183 +1,258 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { portfolio, type ChapterId } from "./content";
+import { useEffect, useState } from "react";
+import { portfolio } from "./content";
 
-const Arrow = () => <span aria-hidden="true">↗</span>;
+const Arrow = () => <span className="link-arrow" aria-hidden="true">↗</span>;
 
-function ChapterHeader({ number, label, title }: { number: string; label: string; title: string }) {
+function SectionHeading({ title }: { title: string }) {
   return (
-    <div className="chapter-heading reveal">
-      <p className="chapter-kicker"><span>{number}</span> / {label}</p>
+    <div className="section-heading reveal">
       <h2>{title}</h2>
     </div>
   );
 }
 
-export default function Home() {
-  const [loaded, setLoaded] = useState(false);
-  const [active, setActive] = useState<ChapterId>("intro");
-  const [progress, setProgress] = useState(0);
-  const [cursor, setCursor] = useState({ x: -80, y: -80, active: false });
-  const [menuOpen, setMenuOpen] = useState(false);
+function StepFlow({
+  label,
+  steps,
+}: {
+  label: string;
+  steps: readonly { title: string; detail: string }[];
+}) {
+  return (
+    <div className="flow-grid" aria-label={label}>
+      {steps.map((step, index) => (
+        <article className={"flow-step flow-step-" + index + " reveal"} key={step.title}>
+          <h3>{step.title}</h3>
+          <p>{step.detail}</p>
+        </article>
+      ))}
+    </div>
+  );
+}
 
-  const chapterIds = useMemo(() => portfolio.chapters.map((chapter) => chapter.id), []);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => setLoaded(true), 1150);
-    const onScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? window.scrollY / max : 0);
-      let current: ChapterId = "intro";
-      chapterIds.forEach((id) => {
-        const node = document.getElementById(id);
-        if (node && node.getBoundingClientRect().top <= window.innerHeight * 0.42) current = id;
-      });
-      setActive(current);
-    };
-    const onPointer = (event: PointerEvent) => setCursor({ x: event.clientX, y: event.clientY, active: true });
-    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")), { threshold: 0.14 });
-    document.querySelectorAll(".reveal").forEach((node) => observer.observe(node));
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("pointermove", onPointer, { passive: true });
-    onScroll();
-    return () => { window.clearTimeout(timer); observer.disconnect(); window.removeEventListener("scroll", onScroll); window.removeEventListener("pointermove", onPointer); };
-  }, [chapterIds]);
-
-  const goTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    setMenuOpen(false);
-  };
+function SkillBubbles() {
+  const [openSkill, setOpenSkill] = useState<string | null>(null);
 
   return (
-    <>
-      <div className={`loader ${loaded ? "loader-done" : ""}`} aria-hidden={loaded}>
-        <div className="loader-mark">AS</div><p>Calibrating the system.</p><div className="loader-track"><i /></div>
-      </div>
-      <div className="cursor" style={{ transform: `translate3d(${cursor.x}px, ${cursor.y}px, 0) scale(${cursor.active ? 1 : 0})` }} aria-hidden="true" />
-      <div className="progress" aria-hidden="true"><i style={{ transform: `scaleX(${progress})` }} /></div>
+    <div className="skill-groups">
+      {portfolio.skills.map((group, groupIndex) => (
+        <section className="skill-group reveal" key={group.group} aria-label={group.group}>
+          <h3>{group.group}</h3>
+          <div className="skill-cloud">
+            {group.items.map((item, itemIndex) => {
+              const id = "skill-" + groupIndex + "-" + itemIndex;
+              const isOpen = openSkill === id;
+              return (
+                <button
+                  className="skill-bubble"
+                  type="button"
+                  key={item.name}
+                  aria-expanded={isOpen}
+                  aria-controls={id}
+                  onClick={() => setOpenSkill(isOpen ? null : id)}
+                >
+                  <span className="skill-bubble-top">
+                    <span>{item.name}</span>
+                    <span className="skill-plus" aria-hidden="true">{isOpen ? "−" : "+"}</span>
+                  </span>
+                  <span className="skill-detail" id={id} hidden={!isOpen}>{item.detail}</span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
+}
 
-      <header className="site-header">
-        <button className="brand" onClick={() => goTo("intro")} aria-label="Back to intro"><small>Systems in Motion</small></button>
-        <div className="header-meta"><span>FRISCO, TX</span></div>
-        <button className="menu-button" aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? "CLOSE" : "CHAPTERS"}</button>
-      </header>
+export default function Home() {
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.add("has-scroll-reveal");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -5% 0px" },
+    );
 
-      <nav id="mobile-menu" className={`mobile-menu ${menuOpen ? "open" : ""}`} aria-label="Primary navigation">
-        {portfolio.chapters.map((chapter) => <button key={chapter.id} onClick={() => goTo(chapter.id)}><span>{chapter.number}</span>{chapter.label}</button>)}
-      </nav>
+    document.querySelectorAll(".reveal").forEach((node) => observer.observe(node));
+    return () => {
+      observer.disconnect();
+      root.classList.remove("has-scroll-reveal");
+    };
+  }, []);
 
-      <aside className="chapter-nav" aria-label="Chapter navigation">
-        {portfolio.chapters.map((chapter) => (
-          <button key={chapter.id} onClick={() => goTo(chapter.id)} className={active === chapter.id ? "active" : ""} aria-label={`${chapter.number} ${chapter.label}`}>
-            <span>{chapter.number}</span><b>{chapter.label}</b>
-          </button>
+  return (
+    <main>
+      <section className="hero" id="top">
+        <div className="hero-grid" aria-hidden="true" />
+        <div className="hero-content">
+          <p className="hero-role reveal">Builder <i>×</i> strategist <i>×</i> musician</p>
+          <h1 className="reveal"><span>Aarav</span><span className="outline">Shah</span></h1>
+          <div className="hero-affiliation reveal">
+            <p>{portfolio.person.school} · Class of 2029</p>
+            <p>{portfolio.person.location}</p>
+          </div>
+          <p className="hero-statement reveal">{portfolio.statement}</p>
+        </div>
+        <div className="scroll-cue reveal" aria-hidden="true">
+          <span>Scroll to explore</span><span className="scroll-cue-arrow">↓</span>
+        </div>
+      </section>
+
+      <section className="metrics-strip" aria-label="Highlights">
+        {portfolio.metrics.map((metric) => (
+          <article className="metric reveal" key={metric.label}>
+            <strong>{metric.value}</strong>
+            <p>{metric.label}</p>
+            <small>{metric.detail}</small>
+          </article>
         ))}
-      </aside>
+      </section>
 
-      <main>
-        <section id="intro" className="chapter hero">
-          <div className="hero-grid" aria-hidden="true" />
-          <div className="hero-topline"><span>01 / INTRO</span><span>PANTHER CREEK · 2029</span></div>
-          <div className="hero-title">
-            <p>Builder <i>×</i> strategist <i>×</i> musician</p>
-            <h1><span>AARAV</span><span className="outline">SHAH</span></h1>
+      <section className="project-section robotics-section" id="robotics">
+        <SectionHeading title={portfolio.projects.robotics.title} />
+        <div className="project-intro reveal">
+          <div>
+            <p className="project-meta">{portfolio.projects.robotics.affiliation}</p>
+            <p className="project-period">{portfolio.projects.robotics.period}</p>
           </div>
-          <div className="hero-bottom">
-            <p>{portfolio.statement}</p>
-            <button className="round-link" onClick={() => goTo("build")} aria-label="Begin the story">BEGIN <span>↓</span></button>
+          <p className="project-summary">{portfolio.projects.robotics.summary}</p>
+          <div className="tags" aria-label="Robotics skills">
+            {portfolio.projects.robotics.tags.map((tag) => <span key={tag}>{tag}</span>)}
           </div>
-        </section>
+        </div>
 
-        <section className="manifesto light-section">
-          <p className="micro reveal">THE OPERATING PRINCIPLE</p>
-          <h2 className="reveal">I work across <em>code, capital, machines, music,</em> and <em>community.</em> Each rewards the same thing: disciplined improvement.</h2>
-        </section>
+        <div className="robot-specs">
+          {portfolio.projects.robotics.specs.map((spec) => (
+            <article className="robot-spec reveal" key={spec.label}>
+              <span>{spec.label}</span>
+              <h3>{spec.value}</h3>
+              <p>{spec.detail}</p>
+            </article>
+          ))}
+        </div>
 
-        <section className="metrics-strip" aria-label="Key metrics">
-          {portfolio.metrics.map((metric) => <article key={metric.value + metric.label} className="metric reveal"><strong>{metric.value}</strong><p>{metric.label}</p><small>{metric.detail}</small></article>)}
-        </section>
+        <StepFlow label="Robotics design and build process" steps={portfolio.projects.robotics.steps} />
+      </section>
 
-        <section id="build" className="chapter project-section build-section">
-          <ChapterHeader number="02" label="BUILD" title="Make motion measurable." />
-          <div className="case-layout">
-            <div className="case-copy reveal"><p className="eyebrow">{portfolio.projects.robotics.eyebrow}</p><h3>{portfolio.projects.robotics.title}</h3><p className="lede">{portfolio.projects.robotics.summary}</p><div className="tags">{portfolio.projects.robotics.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
-            <div className="build-specs reveal" aria-label="Robotics project specifications">
-              <article><span>CHASSIS</span><strong>360°</strong><p>High-speed mecanum movement</p></article>
-              <article><span>MECHANISM</span><strong>PRECISION</strong><p>Projectile-launching system</p></article>
-              <article><span>WORKFLOW</span><strong>CAD → TEST</strong><p>Model, fabricate, reduce, refine</p></article>
+      <section className="project-section trading-section" id="markets">
+        <SectionHeading title={portfolio.projects.trading.title} />
+        <div className="trading-layout">
+          <aside className="return-card reveal" aria-label="Five-month portfolio result">
+            <span>{portfolio.projects.trading.result.label}</span>
+            <strong>{portfolio.projects.trading.result.value}</strong>
+            <p>{portfolio.projects.trading.result.detail}</p>
+            <small>{portfolio.projects.trading.result.notice}</small>
+          </aside>
+          <div className="trading-copy reveal">
+            <p className="project-period">{portfolio.projects.trading.period}</p>
+            <p className="project-summary">{portfolio.projects.trading.summary}</p>
+            <div className="tags" aria-label="Market research skills">
+              {portfolio.projects.trading.tags.map((tag) => <span key={tag}>{tag}</span>)}
             </div>
           </div>
-          <div className="phase-grid">{portfolio.projects.robotics.phases.map((phase, index) => <article className="phase reveal" key={phase.label}><span>0{index + 1}</span><h4>{phase.label}</h4><p>{phase.text}</p></article>)}</div>
-        </section>
+        </div>
+        <StepFlow label="Market research process" steps={portfolio.projects.trading.steps} />
+      </section>
 
-        <section id="trade" className="chapter project-section trade-section">
-          <ChapterHeader number="03" label="TRADE" title="Thousands scanned. One decision at a time." />
-          <div className="trade-grid">
-            <div className="return-card reveal"><span>FIVE-MONTH PERIOD</span><strong>+120%</strong><p>Portfolio return</p><small>Past performance. Personal research project. Not financial advice and not indicative of future results.</small></div>
-            <div className="case-copy reveal"><p className="eyebrow">{portfolio.projects.trading.eyebrow}</p><h3>{portfolio.projects.trading.title}</h3><p className="lede">{portfolio.projects.trading.summary}</p><div className="tags">{portfolio.projects.trading.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
+      <section className="music-section" id="music">
+        <SectionHeading title={portfolio.music.title} />
+        <div className="music-layout">
+          <div className="music-mark reveal" aria-hidden="true">♪</div>
+          <div className="music-copy reveal">
+            <p className="project-meta">{portfolio.music.instrument} · {portfolio.music.role}</p>
+            <p className="project-period">{portfolio.music.period}</p>
+            <p>{portfolio.music.summary}</p>
           </div>
-          <div className="phase-grid dark">{portfolio.projects.trading.phases.map((phase, index) => <article className="phase reveal" key={phase.label}><span>0{index + 1}</span><h4>{phase.label}</h4><p>{phase.text}</p></article>)}</div>
-        </section>
+        </div>
+        <blockquote className="reflection reveal">
+          <p>“{portfolio.music.quote.text}”</p>
+          <cite>
+            <a href={portfolio.music.quote.source} target="_blank" rel="noreferrer">
+              — {portfolio.music.quote.author} · interview transcript <Arrow />
+            </a>
+          </cite>
+        </blockquote>
+      </section>
 
-        <section id="perform" className="chapter perform-section">
-          <ChapterHeader number="04" label="PERFORM" title="Precision you can hear." />
-          <div className="performance-stage">
-            <div className="sound-wave" aria-hidden="true">{Array.from({ length: 44 }, (_, i) => <i key={i} style={{ height: `${10 + ((i * 29) % 88)}%` }} />)}</div>
-            <div className="performance-copy reveal"><p className="eyebrow">TUBA / SOUSAPHONE · STATE-QUALIFIED SOLOIST</p><h3>Consistency under pressure.</h3><p>At Panther Creek, I commit 15–20 hours each week to rehearsals and performances. The work helped the marching band finish third at the UIL State Championships—and helped me qualify for the Texas State Solo & Ensemble Contest as a freshman.</p></div>
-          </div>
-          <blockquote className="reflection reveal"><span>REFLECTION / 01</span>“A system becomes a performance only when every person can trust the timing.”</blockquote>
-        </section>
+      <section className="leadership-section light-section" id="leadership">
+        <SectionHeading title="Build the room, not just the result." />
+        <div className="lead-grid">
+          {portfolio.leadRoles.map((role) => (
+            <article className="lead-card reveal" key={role.organization}>
+              <p className="project-meta">{role.organization}</p>
+              <h3>{role.role}</h3>
+              <p className="lead-period">{role.period}</p>
+              <p>{role.summary}</p>
+              <ul aria-label={role.organization + " skills"}>
+                {role.skills.map((skill) => <li key={skill}>{skill}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
 
-        <section id="lead" className="chapter lead-section light-section">
-          <ChapterHeader number="05" label="LEAD" title="Build the room, not just the result." />
-          <div className="lead-grid">
-            {portfolio.leadRoles.map((role) => <article className="lead-card reveal" key={role.organization}><span>{role.organization}</span><h3>{role.role}</h3><p>{role.summary}</p><ul>{role.skills.map((skill) => <li key={skill}>{skill}</li>)}</ul></article>)}
-            <div className="lead-quote reveal"><p>Leadership is another feedback loop:</p><strong>Listen → align → act → learn.</strong></div>
-          </div>
-          <div className="awards reveal">
-            <p className="micro">HONORS / SIGNALS OF PROGRESS</p>
+        <section className="awards-section" aria-labelledby="awards-title">
+          <h2 id="awards-title" className="reveal">Awards &amp; Recognition</h2>
+          <div className="awards-list">
             {portfolio.awards.map((award) => (
-              <article key={award.title + award.detail}>
+              <article className="award reveal" key={award.title + award.detail}>
                 <strong>{award.title}</strong>
-                <div className="award-copy">
-                  <span>{award.detail}</span>
-                  {award.meta && <small>{award.meta}</small>}
-                  {award.description && <p>{award.description}</p>}
+                <div>
+                  <h3>{award.detail}</h3>
+                  {award.meta && <p>{award.meta}</p>}
                 </div>
               </article>
             ))}
           </div>
         </section>
+      </section>
 
-        <section className="skills-section">
-          <div className="skills-heading reveal"><p className="micro">CONNECTED CAPABILITIES</p><h2>One operating system.<br />Multiple outputs.</h2></div>
-          <div className="skill-list">{portfolio.skills.map((skill, index) => <article className="skill reveal" key={skill.name}><span>{String(index + 1).padStart(2, "0")}</span><h3>{skill.name}</h3><p>{skill.domain}</p><div className="skill-meter"><i style={{ width: `${skill.level}%` }} /></div></article>)}</div>
-        </section>
+      <section className="skills-section" id="skills">
+        <SectionHeading title="Skills &amp; coursework." />
+        <SkillBubbles />
+      </section>
 
-        <section className="timeline-section light-section">
-          <p className="micro reveal">DEVELOPMENT LOG</p><div className="timeline">{portfolio.timeline.map((item) => <article className="reveal" key={item.year}><span>{item.year}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}</div>
-        </section>
+      <section className="education-section light-section" id="education">
+        <SectionHeading title="Education." />
+        <div className="education-grid">
+          <article className="education-card reveal">
+            <span>School</span>
+            <h3>{portfolio.education.school}</h3>
+            <p>{portfolio.education.dates}</p>
+            <p>{portfolio.education.graduation}</p>
+          </article>
+          <article className="education-card reveal">
+            <span>Coursework focus</span>
+            <p>{portfolio.education.focus}</p>
+          </article>
+        </div>
+        <p className="spoken-languages reveal">
+          Languages: Gujarati (limited working proficiency) · Spanish (elementary proficiency)
+        </p>
+      </section>
 
-        <section id="future" className="chapter future-section">
-          <ChapterHeader number="06" label="FUTURE" title="The next system is already moving." />
-          <div className="future-layout">
-            <div className="explore-list">{portfolio.explorations.map((item, index) => <article className="reveal" key={item}><span>0{index + 1}</span><h3>{item}</h3></article>)}</div>
-          </div>
-          <div className="education-grid reveal"><div><span>EDUCATION</span><h3>{portfolio.person.school}</h3><p>2025–2029 · Expected graduation {portfolio.person.graduation}</p></div><div><span>COURSEWORK</span><p>{portfolio.coursework.join(" · ")}</p></div><div><span>LANGUAGES</span><p>{portfolio.languages.join(" · ")}</p></div></div>
-        </section>
+      <section className="contact-section" id="contact">
+        <h2 className="reveal">Get in touch.</h2>
+        <div className="contact-links reveal">
+          <a href={"mailto:" + portfolio.person.email}>{portfolio.person.email}<Arrow /></a>
+          <a href={portfolio.person.linkedIn} target="_blank" rel="noreferrer">LinkedIn<Arrow /></a>
+        </div>
+      </section>
 
-        <section className="insights-section light-section">
-          <p className="micro reveal">FIELD NOTES / INSIGHTS</p><div className="insights-grid"><article className="reveal"><span>01 / ENGINEERING</span><h3>Iteration is a form of honesty.</h3><p>The prototype tells you where the idea is weak. The next version is the response.</p></article><article className="reveal"><span>02 / MARKETS</span><h3>Speed needs a governor.</h3><p>Automation creates range. Judgment and risk controls decide what deserves action.</p></article><article className="reveal"><span>03 / PERFORMANCE</span><h3>Consistency compounds.</h3><p>Repetition becomes confidence; confidence becomes capacity under pressure.</p></article></div>
-        </section>
-
-        <section id="contact" className="contact-section">
-          <p className="micro reveal">START A CONVERSATION</p><h2 className="reveal">Let’s improve<br /><em>the system.</em></h2>
-          <div className="contact-links reveal"><a href={`mailto:${portfolio.person.email}`}>{portfolio.person.email}<Arrow /></a><a href={portfolio.person.linkedIn} target="_blank" rel="noreferrer">LinkedIn<Arrow /></a></div>
-        </section>
-      </main>
-
-      <footer><div className="footer-mark">AS<span>+</span></div><p>Always improving the system.</p><span>© {new Date().getFullYear()} · FRISCO, TEXAS</span></footer>
-    </>
+      <footer className="site-footer" aria-label="Social links">
+        <a href={portfolio.person.github} target="_blank" rel="noreferrer">GitHub<Arrow /></a>
+        <a href={portfolio.person.linkedIn} target="_blank" rel="noreferrer">LinkedIn<Arrow /></a>
+        <a href={"mailto:" + portfolio.person.email}>Email<Arrow /></a>
+      </footer>
+    </main>
   );
 }
