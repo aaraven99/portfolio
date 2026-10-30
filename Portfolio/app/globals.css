@@ -364,6 +364,8 @@ button:focus-visible, a:focus-visible {
 .skill-bubble:hover, .skill-bubble:focus-visible {
   transform: scale(1.035);
   border-color: var(--lime);
+  background: var(--lime);
+  color: var(--ink);
 }
 .skill-bubble[aria-expanded="true"] {
   width: min(34rem, 100%);
@@ -375,6 +377,7 @@ button:focus-visible, a:focus-visible {
 .skill-bubble-top { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
 .skill-bubble-top > span:first-child { font-size: .88rem; white-space: nowrap; }
 .skill-plus { color: var(--lime); font-size: 1rem; }
+.skill-bubble:hover .skill-plus, .skill-bubble:focus-visible .skill-plus { color: var(--ink); }
 .skill-bubble[aria-expanded="true"] .skill-plus { color: var(--ink); }
 .skill-detail { display: block; max-width: 31rem; margin-top: .8rem; font-size: .82rem; line-height: 1.6; }
 
